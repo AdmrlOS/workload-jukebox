@@ -1,0 +1,21 @@
+services:
+  jukebox:
+    build: .
+    network_mode: host
+    devices:
+      - /dev/snd:/dev/snd
+    volumes:
+      - jukebox-data:/data
+    environment:
+      JUKEBOX_NAME: Admiral Office
+      ALSA_DEVICE: ${ALSA_DEVICE:-default}
+      ADMIN_TOKEN: ${ADMIN_TOKEN:?Set ADMIN_TOKEN in your environment}
+    restart: unless-stopped
+    stop_grace_period: 20s
+    logging:
+      driver: json-file
+      options:
+        max-size: 5m
+        max-file: '3'
+volumes:
+  jukebox-data:
